@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "components": {
+    "shell": {
+      "repo": "claude-dev-kit/cdk-shell",
+      "version": "1.0.0",
+      "min_claude_version": "1.0.0",
+      "platforms": ["darwin", "linux"],
+      "dependencies": ["git"],
+      "description": "Shell environment: zsh, powerlevel10k, completions, aliases"
+    },
+    "editor": {
+      "repo": "claude-dev-kit/cdk-editor",
+      "version": "1.0.0",
+      "platforms": ["darwin", "linux", "win32"],
+      "dependencies": [],
+      "description": "Editor config: VS Code/Cursor settings, extensions, keybindings"
+    },
+    "git": {
+      "repo": "claude-dev-kit/cdk-git",
+      "version": "1.0.0",
+      "platforms": ["darwin", "linux", "win32"],
+      "dependencies": ["git"],
+      "description": "Git workflow: hooks, commit templates, PR templates, CI"
+    },
+    "templates": {
+      "repo": "claude-dev-kit/cdk-templates",
+      "version": "1.0.0",
+      "platforms": ["darwin", "linux", "win32"],
+      "dependencies": [],
+      "description": "Project context: CLAUDE.md templates, scaffolds, patterns"
+    },
+    "quality": {
+      "repo": "claude-dev-kit/cdk-quality",
+      "version": "1.0.0",
+      "platforms": ["darwin", "linux", "win32"],
+      "dependencies": ["git"],
+      "description": "Quality gates: linting, testing, review automation"
+    },
+    "memory": {
+      "repo": "claude-dev-kit/cdk-memory",
+      "version": "1.0.0",
+      "platforms": ["darwin", "linux", "win32"],
+      "dependencies": [],
+      "description": "Context management: conversation search, summarization"
+    }
+  },
+  "bundles": {
+    "minimal": ["shell"],
+    "standard": ["shell", "editor", "git", "templates"],
+    "full": ["shell", "editor", "git", "templates", "quality", "memory"]
+  },
+  "compatibility": {
+    "macos": { "min": "12.0" },
+    "ubuntu": { "min": "22.04" },
+    "windows": { "min": "10" }
+  }
+}
