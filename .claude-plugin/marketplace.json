@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "claude-dev-kit",
-      "source": ".",
+      "source": "./",
       "description": "Comprehensive developer environment toolkit for Claude Code. Includes shell setup (zsh, powerlevel10k), editor config (VS Code/Cursor), git workflows, project templates, quality gates, and context management.",
       "version": "1.0.0",
       "author": {
