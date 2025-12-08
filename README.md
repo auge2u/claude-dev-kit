@@ -20,8 +20,8 @@ Both methods configure the same things - choose based on your preference.
 If you have Claude Code, install as a plugin for the full interactive experience:
 
 ```bash
-# Install the plugin
-claude /install-plugin github:auge2u/claude-dev-kit
+# Add the marketplace (run inside Claude Code)
+/add-marketplace auge2u/claude-dev-kit
 ```
 
 Then start a conversation:
