@@ -4,9 +4,18 @@ A comprehensive, Claude-native developer environment toolkit.
 
 **Claude installs itself** - the installer is a skill that Claude runs interactively.
 
-## Quick Start
+## Installation
 
-### With Claude Code
+### As Claude Code Plugin (Recommended)
+
+```bash
+# Install from GitHub
+claude /install-plugin github:auge2u/claude-dev-kit
+```
+
+Once installed, the skills are automatically available in Claude Code.
+
+### Quick Start with Claude Code
 
 ```bash
 # In Claude Code, simply say:
