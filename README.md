@@ -2,85 +2,107 @@
 
 A comprehensive, Claude-native developer environment toolkit.
 
-**Claude installs itself** - the installer is a skill that Claude runs interactively.
+Optimizes your machine for Claude Code development: shell, editor, git, templates, quality gates, and more.
 
-## Installation
+## Two Ways to Install
 
-### As Claude Code Plugin (Recommended)
+| Method | Best For | Experience |
+|--------|----------|------------|
+| **Claude Code Plugin** | Claude Code users | Interactive, conversational setup |
+| **Standalone Script** | Anyone | Traditional CLI installer |
+
+Both methods configure the same things - choose based on your preference.
+
+---
+
+## Option 1: Claude Code Plugin (Interactive)
+
+If you have Claude Code, install as a plugin for the full interactive experience:
 
 ```bash
-# Install from GitHub
+# Install the plugin
 claude /install-plugin github:auge2u/claude-dev-kit
 ```
 
-Once installed, the skills are automatically available in Claude Code.
-
-### Quick Start with Claude Code
+Then start a conversation:
 
 ```bash
-# In Claude Code, simply say:
-"Set up my dev environment for Claude"
+# Ask Claude to set up your environment
+claude "Set up my dev environment"
 
-# Or invoke the skill directly:
-Skill: setup-claude-dev-kit
+# Or be specific
+claude "Setup shell with powerlevel10k"
+claude "Configure VS Code for Claude development"
 ```
 
-### Without Claude Code
+**What you get:**
+- Claude walks you through options
+- Asks about your preferences
+- Adapts to your existing setup
+- Explains what it's doing
+
+---
+
+## Option 2: Standalone Script (No Claude Required)
+
+Run directly without Claude Code:
 
 ```bash
-# One-liner installation
-curl -fsSL https://raw.githubusercontent.com/claude-dev-kit/claude-dev-kit/main/install.sh | bash
+# One-liner (interactive)
+curl -fsSL https://raw.githubusercontent.com/auge2u/claude-dev-kit/main/install.sh | bash
 
-# Or clone and run
-git clone https://github.com/claude-dev-kit/claude-dev-kit.git
+# Or clone first
+git clone https://github.com/auge2u/claude-dev-kit.git
 cd claude-dev-kit
 ./install.sh
 ```
 
-## Bundles
-
-| Bundle | Components | Use Case |
-|--------|------------|----------|
-| **minimal** | shell | Quick setup, just the essentials |
-| **standard** | shell, editor, git, templates | Most developers |
-| **full** | all components | Complete optimization |
-
-## Components
-
-| Component | Skill | Description |
-|-----------|-------|-------------|
-| Shell | [`setup-cdk-shell`](skills/shell/SKILL.md) | Zsh, Powerlevel10k, completions, aliases |
-| Editor | [`setup-cdk-editor`](skills/editor/SKILL.md) | VS Code/Cursor settings, extensions |
-| Git | [`setup-cdk-git`](skills/git/SKILL.md) | Hooks, commit templates, PR workflows |
-| Templates | [`setup-cdk-templates`](skills/templates/SKILL.md) | CLAUDE.md templates, project scaffolds |
-| Quality | [`setup-cdk-quality`](skills/quality/SKILL.md) | Linting, CI workflows, review automation |
-| Memory | [`setup-cdk-memory`](skills/memory/SKILL.md) | Context management, session export |
-
-## Installation Modes
-
-### Greenfield (Fresh Machine)
-Opinionated defaults, fast setup, minimal questions.
-
-### Adaptation (Existing Setup)
-Respects your config, shows diffs, backs up before changes.
-
-## Install Script Options
+**Fastest install** - no prompts, smart defaults:
 
 ```bash
-./install.sh [options]
+./install.sh --feeling-lucky
 ```
+
+### Script Options
 
 | Flag | Description |
 |------|-------------|
 | `--feeling-lucky` | Auto-configure everything with smart defaults |
-| `--bundle <name>` | Choose bundle: minimal, standard, full |
+| `--bundle <name>` | Choose bundle: `minimal`, `standard`, `full` |
 | `--non-interactive` | Skip all prompts, use defaults |
 | `--help` | Show help |
 
-**Fastest install:**
-```bash
-./install.sh --feeling-lucky
-```
+---
+
+## What Gets Installed
+
+### Bundles
+
+| Bundle | Components | Use Case |
+|--------|------------|----------|
+| **minimal** | shell | Quick setup, just the essentials |
+| **standard** | shell, editor, git, templates | Most developers (default) |
+| **full** | all components | Complete optimization |
+
+### Components
+
+| Component | What it does |
+|-----------|--------------|
+| **Shell** | Zsh, Oh My Zsh, Powerlevel10k, MesloLGS fonts, aliases |
+| **Editor** | VS Code/Cursor settings, extensions (GitLens, Error Lens, Prettier) |
+| **Git** | Pre-commit hooks, commit templates, PR templates, conventions |
+| **Templates** | CLAUDE.md templates, `.claude/` directory scaffolds |
+| **Quality** | Linting setup, CI workflows, code review checklists |
+| **Memory** | Context management, session export, project memory |
+
+## Installation Modes
+
+The installer detects your environment and adapts:
+
+| Mode | When | Behavior |
+|------|------|----------|
+| **Greenfield** | Fresh machine, minimal config | Opinionated defaults, fast setup |
+| **Adaptation** | Existing setup detected | Respects your config, backs up before changes |
 
 ## Updating
 
@@ -88,7 +110,7 @@ Respects your config, shows diffs, backs up before changes.
 # With Claude Code
 claude "update-claude-dev-kit"
 
-# Or re-run install script (safe to run multiple times)
+# Or re-run install script (idempotent - safe to run multiple times)
 ./install.sh
 ```
 
@@ -102,12 +124,12 @@ claude "update-claude-dev-kit"
 
 ## Requirements
 
+**Required:**
 - macOS 12+ or Ubuntu 22.04+
-- git
-- curl
+- git, curl
 
-Optional:
-- [Claude Code](https://claude.ai/code) - For the full interactive experience
+**Optional:**
+- [Claude Code](https://claude.ai/code) - For the interactive plugin experience
 - VS Code or Cursor - For editor component
 
 ## License
