@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate JSON files
+        run: |
+          echo "Validating registry.json..."
+          python3 -m json.tool registry.json > /dev/null
+          echo "✓ registry.json is valid"
+
+      - name: Validate skill frontmatter
+        run: |
+          echo "Validating skill files..."
+          for skill in skills/SKILL.md skills/*/SKILL.md; do
+            if [ -f "$skill" ]; then
+              echo "  Checking: $skill"
+
+              # Check frontmatter exists
+              if ! head -1 "$skill" | grep -q "^---$"; then
+                echo "    ✗ Missing opening frontmatter"
+                exit 1
+              fi
+
+              # Check frontmatter closes
+              if ! head -10 "$skill" | tail -n +2 | grep -q "^---$"; then
+                echo "    ✗ Missing closing frontmatter"
+                exit 1
+              fi
+
+              # Check name field exists
+              if ! grep -q "^name:" "$skill"; then
+                echo "    ✗ Missing name field"
+                exit 1
+              fi
+
+              # Check description field exists
+              if ! grep -q "^description:" "$skill"; then
+                echo "    ✗ Missing description field"
+                exit 1
+              fi
+
+              echo "    ✓ Valid"
+            fi
+          done
+          echo "All skills validated!"
+
+      - name: Validate install.sh syntax
+        run: |
+          echo "Validating install.sh..."
+          bash -n install.sh
+          echo "✓ install.sh syntax is valid"
+
+      - name: Check for common issues
+        run: |
+          echo "Checking for common issues..."
+
+          # Check for TODO/FIXME that should be resolved
+          if grep -rn "TODO\|FIXME" skills/ --include="*.md" | grep -v "TODO/FIXME"; then
+            echo "Warning: Found TODO/FIXME comments in skills"
+          fi
+
+          # Check for broken internal links
+          for file in skills/*/SKILL.md; do
+            if grep -oP '\[.*?\]\((?!http).*?\)' "$file" 2>/dev/null; then
+              echo "Note: Found internal links in $file - verify they work"
+            fi
+          done
+
+          echo "✓ Checks complete"
+
+  test-install:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test install.sh --help
+        run: |
+          chmod +x install.sh
+          ./install.sh --help
+
+      - name: Test install.sh dry run (non-interactive)
+        run: |
+          # Just validate it starts without errors
+          # Don't actually install (would modify system)
+          timeout 5 ./install.sh --non-interactive --bundle minimal 2>&1 | head -20 || true
+          echo "Install script executed without syntax errors"

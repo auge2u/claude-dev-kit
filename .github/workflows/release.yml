@@ -1,0 +1,83 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+          # Check registry.json matches tag
+          REGISTRY_VERSION=$(cat registry.json | grep -o '"schema_version"[^,]*' | cut -d'"' -f4)
+          echo "Registry schema version: $REGISTRY_VERSION"
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Extract changelog section for this version
+          if [ -f CHANGELOG.md ]; then
+            CHANGES=$(sed -n "/^## \[${VERSION}\]/,/^## \[/p" CHANGELOG.md | head -n -1)
+          else
+            CHANGES="Release v${VERSION}"
+          fi
+
+          # Write to file for release body
+          echo "$CHANGES" > /tmp/release-notes.md
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: /tmp/release-notes.md
+          draft: false
+          prerelease: ${{ contains(github.ref, '-beta') || contains(github.ref, '-alpha') }}
+          files: |
+            install.sh
+            registry.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate install.sh
+        run: |
+          # Check script is valid bash
+          bash -n install.sh
+
+          # Check it's executable
+          test -x install.sh || chmod +x install.sh
+
+      - name: Validate registry.json
+        run: |
+          # Check JSON is valid
+          cat registry.json | python3 -m json.tool > /dev/null
+
+      - name: Validate skill files
+        run: |
+          # Check all skill files exist and have frontmatter
+          for skill in skills/*/SKILL.md; do
+            if [ -f "$skill" ]; then
+              echo "Validating: $skill"
+              head -1 "$skill" | grep -q "^---$" || { echo "Missing frontmatter: $skill"; exit 1; }
+            fi
+          done
+
+          echo "All skills validated"

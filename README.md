@@ -43,11 +43,24 @@ Respects your config, shows diffs, backs up before changes.
 
 ## Manual Installation
 
-If you prefer not to use Claude:
+If you prefer not to use Claude Code:
 
 ```bash
+# Interactive installation
 curl -fsSL https://raw.githubusercontent.com/claude-dev-kit/claude-dev-kit/main/install.sh | bash
+
+# Or with options
+./install.sh --bundle standard           # Skip prompts, use standard bundle
+./install.sh --bundle minimal --non-interactive   # Fully automated
 ```
+
+### Options
+
+| Flag | Description |
+|------|-------------|
+| `--bundle <name>` | Choose bundle: minimal, standard, full |
+| `--non-interactive` | Skip all prompts, use defaults |
+| `--help` | Show help |
 
 ## License
 
