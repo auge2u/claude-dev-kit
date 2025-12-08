@@ -26,6 +26,51 @@ Claude-native installer for a comprehensive developer environment. Detects exist
 
 ## Installation Flow
 
+### 0. Quick Start Question (First Prompt)
+
+**Ask immediately before anything else:**
+
+```
+Welcome to Claude Dev Kit!
+
+How would you like to proceed?
+
+1. 🍀 Feeling Lucky - Auto-configure everything with smart defaults
+2. 🎛️  Guided Setup - Walk me through the options
+```
+
+**If "Feeling Lucky" selected:**
+- Skip all subsequent prompts
+- Auto-detect environment (greenfield vs adaptation)
+- Install **standard** bundle (shell, editor, git, templates)
+- Use these defaults:
+  - Shell: Install p10k, keep existing aliases
+  - Editor: Add extensions, merge settings (don't overwrite)
+  - Git: Add hooks and templates, preserve existing config
+  - Templates: Create CLAUDE.md if missing
+  - Quality enforcement: **soft** (warns but allows bypass)
+- Backup everything before changes
+- Show summary at end
+
+**Feeling Lucky behavior:**
+```
+🍀 Feeling Lucky mode activated!
+
+Detecting environment... macOS, zsh, VS Code
+Mode: Greenfield
+
+Installing standard bundle:
+  → Shell (zsh, powerlevel10k, fonts, aliases)
+  → Editor (VS Code settings, extensions)
+  → Git (hooks, templates, conventions)
+  → Templates (CLAUDE.md, .claude/ directory)
+
+Creating backups... done
+Installing components... [progress]
+
+✓ Complete! Restart your terminal to activate.
+```
+
 ### 1. Detect Environment
 
 ```bash

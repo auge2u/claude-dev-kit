@@ -63,9 +63,15 @@ Respects your config, shows diffs, backs up before changes.
 
 | Flag | Description |
 |------|-------------|
+| `--feeling-lucky` | Auto-configure everything with smart defaults |
 | `--bundle <name>` | Choose bundle: minimal, standard, full |
 | `--non-interactive` | Skip all prompts, use defaults |
 | `--help` | Show help |
+
+**Fastest install:**
+```bash
+./install.sh --feeling-lucky
+```
 
 ## Updating
 

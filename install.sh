@@ -25,6 +25,7 @@ BACKUP_DIR="$HOME/.claude-dev-kit/backups/$(date +%Y-%m-%d)"
 # Flags
 BUNDLE=""
 NON_INTERACTIVE=false
+FEELING_LUCKY=false
 
 # ------------------------------------------------------------------------------
 # Utility Functions
@@ -181,21 +182,29 @@ select_bundle() {
   fi
 
   echo ""
-  echo -e "${CYAN}Select installation bundle:${NC}"
+  echo -e "${CYAN}How would you like to proceed?${NC}"
   echo ""
-  echo "  1) minimal   - Shell only (zsh, powerlevel10k, completions)"
-  echo "  2) standard  - Shell + Editor + Git + Templates (recommended)"
-  echo "  3) full      - Everything including Quality and Memory tools"
-  echo "  4) custom    - Choose individual components"
+  echo -e "  ${GREEN}1) Feeling Lucky${NC}  - Auto-configure everything with smart defaults"
+  echo "  2) minimal       - Shell only (zsh, powerlevel10k, completions)"
+  echo "  3) standard      - Shell + Editor + Git + Templates"
+  echo "  4) full          - Everything including Quality and Memory tools"
+  echo "  5) custom        - Choose individual components"
   echo ""
 
-  read -r -p "Enter choice [1-4]: " choice
+  read -r -p "Enter choice [1-5]: " choice
 
   case "$choice" in
-    1) BUNDLE="minimal" ;;
-    2) BUNDLE="standard" ;;
-    3) BUNDLE="full" ;;
-    4) select_custom_components ;;
+    1)
+      BUNDLE="standard"
+      FEELING_LUCKY=true
+      echo ""
+      echo -e "${GREEN}Feeling Lucky mode activated!${NC}"
+      echo ""
+      ;;
+    2) BUNDLE="minimal" ;;
+    3) BUNDLE="standard" ;;
+    4) BUNDLE="full" ;;
+    5) select_custom_components ;;
     *) BUNDLE="standard" ;;
   esac
 
@@ -606,6 +615,12 @@ parse_args() {
         BUNDLE="$2"
         shift 2
         ;;
+      --feeling-lucky)
+        FEELING_LUCKY=true
+        BUNDLE="standard"
+        NON_INTERACTIVE=true
+        shift
+        ;;
       --non-interactive)
         NON_INTERACTIVE=true
         shift
@@ -614,6 +629,7 @@ parse_args() {
         echo "Usage: $0 [options]"
         echo ""
         echo "Options:"
+        echo "  --feeling-lucky     Auto-configure everything with smart defaults"
         echo "  --bundle <name>     Install specific bundle (minimal, standard, full)"
         echo "  --non-interactive   Skip prompts, use defaults"
         echo "  --help              Show this help"
@@ -638,17 +654,21 @@ main() {
 
   check_os
   check_dependencies
+
+  # Ask bundle selection first (includes "Feeling Lucky" option)
+  select_bundle
+
   detect_environment
 
+  # Skip confirmation if Feeling Lucky mode
   echo ""
-  if [ "$MODE" = "adaptation" ] && ! $NON_INTERACTIVE; then
+  if [ "$MODE" = "adaptation" ] && ! $NON_INTERACTIVE && ! $FEELING_LUCKY; then
     if ! confirm "Existing setup detected. Continue with adaptation mode?"; then
       log_info "Installation cancelled."
       exit 0
     fi
   fi
 
-  select_bundle
   create_backup
 
   echo ""
