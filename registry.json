@@ -1,44 +1,44 @@
 {
   "schema_version": "1.0",
+  "repo": "auge2u/claude-dev-kit",
   "components": {
     "shell": {
-      "repo": "claude-dev-kit/cdk-shell",
+      "skill": "skills/shell/SKILL.md",
       "version": "1.0.0",
-      "min_claude_version": "1.0.0",
       "platforms": ["darwin", "linux"],
       "dependencies": ["git"],
       "description": "Shell environment: zsh, powerlevel10k, completions, aliases"
     },
     "editor": {
-      "repo": "claude-dev-kit/cdk-editor",
+      "skill": "skills/editor/SKILL.md",
       "version": "1.0.0",
       "platforms": ["darwin", "linux", "win32"],
       "dependencies": [],
       "description": "Editor config: VS Code/Cursor settings, extensions, keybindings"
     },
     "git": {
-      "repo": "claude-dev-kit/cdk-git",
+      "skill": "skills/git/SKILL.md",
       "version": "1.0.0",
       "platforms": ["darwin", "linux", "win32"],
       "dependencies": ["git"],
       "description": "Git workflow: hooks, commit templates, PR templates, CI"
     },
     "templates": {
-      "repo": "claude-dev-kit/cdk-templates",
+      "skill": "skills/templates/SKILL.md",
       "version": "1.0.0",
       "platforms": ["darwin", "linux", "win32"],
       "dependencies": [],
       "description": "Project context: CLAUDE.md templates, scaffolds, patterns"
     },
     "quality": {
-      "repo": "claude-dev-kit/cdk-quality",
+      "skill": "skills/quality/SKILL.md",
       "version": "1.0.0",
       "platforms": ["darwin", "linux", "win32"],
       "dependencies": ["git"],
       "description": "Quality gates: linting, testing, review automation"
     },
     "memory": {
-      "repo": "claude-dev-kit/cdk-memory",
+      "skill": "skills/memory/SKILL.md",
       "version": "1.0.0",
       "platforms": ["darwin", "linux", "win32"],
       "dependencies": [],
