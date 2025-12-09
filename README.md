@@ -20,19 +20,22 @@ Both methods configure the same things - choose based on your preference.
 If you have Claude Code, install as a plugin for the full interactive experience:
 
 ```bash
-# Add the marketplace (run inside Claude Code)
-/add-marketplace auge2u/claude-dev-kit
+# Step 1: Add the marketplace (run inside Claude Code)
+/plugin marketplace add auge2u/claude-dev-kit
+
+# Step 2: Install the plugin
+/plugin install claude-dev-kit@claude-dev-kit
 ```
 
-Then start a conversation:
+Then use the skills:
 
 ```bash
 # Ask Claude to set up your environment
-claude "Set up my dev environment"
+"Set up my dev environment"
 
-# Or be specific
-claude "Setup shell with powerlevel10k"
-claude "Configure VS Code for Claude development"
+# Or invoke skills directly
+Skill: setup-claude-dev-kit
+Skill: setup-cdk-shell
 ```
 
 **What you get:**
@@ -40,6 +43,13 @@ claude "Configure VS Code for Claude development"
 - Asks about your preferences
 - Adapts to your existing setup
 - Explains what it's doing
+
+**Other plugin commands:**
+```bash
+/plugin                              # Interactive plugin browser
+/plugin marketplace list             # List installed marketplaces
+/plugin marketplace remove claude-dev-kit  # Remove marketplace
+```
 
 ---
 
